@@ -6,12 +6,22 @@ const path = require("path");
 const imagemin = require("imagemin");
 const imageminJpegRecompress = require("imagemin-jpeg-recompress");
 const imageminPngquant = require("imagemin-pngquant");
+const dotenv = require("dotenv");
+const cookieParser = require('cookie-parser');
 const app = express();
 
+dotenv.config();
 let dir = "public";
 let subDirectory = "public/uploads";
 
 app.use(express.static('public'));
+// Parse URL-encoded bodies (as sent by HTML forms)
+app.use(express.urlencoded({ extended: false }));
+// Parse JSON bodies (as sent by API clients)
+app.use(express.json());
+app.use(cookieParser());
+
+app.set('view engine', 'hbs');
 
 if (!fs.existsSync(dir))
 {
@@ -46,9 +56,9 @@ let compressFilesUpload = multer({
     }
 });
 
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + "/index.html");
-});
+// Define Routes
+app.use('/', require('./routes/pages'));
+app.use('/auth', require('./routes/auth'));
 
 app.post('/', compressFilesUpload.array('file', 20), async (req, res) => {
     const file = req.files;
@@ -114,7 +124,5 @@ app.post('/', compressFilesUpload.array('file', 20), async (req, res) => {
     res.status(400).send({ error: error.message })
 });
 
-
-app.listen(5000, function () {
-    console.log("Server is listening on port 5000");
-});
+const port = process.env.PORT || 5000;
+app.listen(port, () => console.log(`Server is listening on port ${port}`));
