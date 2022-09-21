@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/', authController.isLoggedIn, (req, res) => {
     if (req.user) {
         res.render('index', {
-            user: req.user
+            user: JSON.stringify(req.user)
         });
     } else {
         res.redirect('/login');

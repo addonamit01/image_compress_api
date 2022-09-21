@@ -8,57 +8,57 @@
   <title>Document</title>
 </head>
 <body>
-  <nav>
-    <h4>Node MySQL</h4>
-    <ul>
-      {{!-- <li><a href="/">Home</a></li> --}}
-      <li><a href="/login">Login</a></li>
-      <li><a href="/register">Register</a></li>
-    </ul>
-  </nav>
+	<nav>
+		<h4>Node MySQL</h4>
+		<ul>
+			{{!-- <li><a href="/">Home</a></li> --}}
+			<li><a href="/login">Login</a></li>
+			<li><a href="/register">Register</a></li>
+		</ul>
+	</nav>
 
-  <div class="container mt-4">
-    {{#if message }}
-        {{#if class }}
-            <h4 class="alert alert-{{ class }} mt-4">{{ message }}</h4>
-        {{/if}}
-    {{/if}}
-    <div class="card">
-      <div class="card-header">
-        Register Form
-      </div>
-      <div class="card-body">
-        <form action="/auth/register" method="POST">
-          <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" class="form-control" id="name" name="name" required>
-          </div>
+	<div class="container mt-4">
+		{{#if message }}
+			{{#if class }}
+				<h4 class="alert alert-{{ class }} mt-4">{{ message }}</h4>
+			{{/if}}
+		{{/if}}
+		<div class="card">
+			<div class="card-header">
+				Register Form
+			</div>
+			<div class="card-body">
+				<form action="/auth/register" method="POST">
+					<div class="form-group">
+						<label for="name">Name</label>
+						<input type="text" class="form-control" id="name" name="name" required>
+					</div>
 
-          <div class="form-group">
-            <label for="email">Email Address</label>
-            <input type="email" class="form-control" id="email" name="email" required>
-          </div>
+					<div class="form-group">
+						<label for="email">Email Address</label>
+						<input type="email" class="form-control" id="email" name="email" required>
+					</div>
 
-          <div class="form-group">
-            <label for="phoneNumber">Phone Number</label>
-            <input type="tel" class="form-control" name="phoneNumber" id="phoneNumber" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" maxlength="12" title="Ten digits code" required/>
-          </div>
+					<div class="form-group">
+						<label for="phoneNumber">Phone Number</label>
+						<input type="tel" class="form-control" name="phoneNumber" id="phoneNumber" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" maxlength="12" title="Ten digits code" required/>
+					</div>
 
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" name="password" required>
-          </div>
+					<div class="form-group">
+						<label for="password">Password</label>
+						<input type="password" class="form-control" id="password" name="password" required>
+					</div>
 
-          <div class="form-group">
-            <label for="passwordConfirm">Confirm Password</label>
-            <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm" required>
-          </div>
-          
-          <button type="submit" class="btn btn-primary">Register User</button>
-        </form>
-      </div>
-    </div> 
-  </div>
+					<div class="form-group">
+						<label for="passwordConfirm">Confirm Password</label>
+						<input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm" required>
+					</div>
+					
+					<button type="submit" class="btn btn-primary">Register User</button>
+				</form>
+			</div>
+		</div> 
+	</div>
 
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 </body>

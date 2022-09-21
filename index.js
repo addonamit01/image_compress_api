@@ -8,6 +8,7 @@ const imageminJpegRecompress = require("imagemin-jpeg-recompress");
 const imageminPngquant = require("imagemin-pngquant");
 const dotenv = require("dotenv");
 const cookieParser = require('cookie-parser');
+const authController = require('./controllers/auth');
 const app = express();
 
 dotenv.config();
@@ -60,7 +61,9 @@ let compressFilesUpload = multer({
 app.use('/', require('./routes/pages'));
 app.use('/auth', require('./routes/auth'));
 
-app.post('/', compressFilesUpload.array('file', 20), async (req, res) => {
+app.post('/', [authController.checkApiAccessLimit, compressFilesUpload.array('file', 20)], async (req, res) => {
+    const userId = JSON.parse(req.body.user).id;
+    authController.updateApiAccessLimit({ userId });
     const file = req.files;
     const zip = new admzip();
     let destinationPath = [];
@@ -121,7 +124,12 @@ app.post('/', compressFilesUpload.array('file', 20), async (req, res) => {
         });
     }
 }, (error, req, res, next) => {
-    res.status(400).send({ error: error.message })
+
+    if (error.code == "LIMIT_UNEXPECTED_FILE")
+    {
+        res.status(400).send({ message: "Allow only 20 Image" });
+    }
+    res.status(400).send({ error: error.message });
 });
 
 const port = process.env.PORT || 5000;

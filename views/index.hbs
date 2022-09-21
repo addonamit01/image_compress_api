@@ -9,33 +9,34 @@
 </head>
 <body>
   <nav>
-    <h4>Node MySQL</h4>
-    <ul>
-      <li><a href="/">Home</a></li>
-      {{#if user }}
-        <li><a href="/auth/logout">Logout</a></li>
-      {{else}}
-        <li><a href="/login">Login</a></li>
-        <li><a href="/register">Register</a></li>
-      {{/if}}
-    </ul>
+	<h4>Node MySQL</h4>
+	<ul>
+	  <li><a href="/">Home</a></li>
+	  {{#if user }}
+		<li><a href="/auth/logout">Logout</a></li>
+	  {{else}}
+		<li><a href="/login">Login</a></li>
+		<li><a href="/register">Register</a></li>
+	  {{/if}}
+	</ul>
   </nav>
 
   <div class="container mt-4">
-    <div class="jumbotron">
-      <h1 class="text-center">Compress Files to ZIP File</h1>
-        <form action="/" method="post" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="file">Upload Files:</label>
-                <input class="form-control" type="file" name="file" id="" multiple required>
-            </div>
-            <div class="form-group">
-                <button class="btn btn-block btn-danger">
-                    Compress File
-                </button>
-            </div>
-        </form>
-    </div>
+	<div class="jumbotron">
+	  <h1 class="text-center">Compress Files to ZIP File</h1>
+		<form action="/" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="user" value="{{ user }}" />
+			<div class="form-group">
+				<label for="file">Upload Files:</label>
+				<input class="form-control" type="file" name="file" id="" multiple required>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-block btn-danger">
+					Compress File
+				</button>
+			</div>
+		</form>
+	</div>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
