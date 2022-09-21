@@ -1,7 +1,6 @@
 const db = require('../config/db');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const { promisify } = require('util');
 
 
 exports.login = async (req, res) => {
@@ -97,38 +96,6 @@ exports.register = (req, res) => {
 	});
 }
 
-exports.isLoggedIn = async (req, res, next) => {
-  // console.log(req.cookies);
-  if( req.cookies.jwt) {
-	try {
-	  //1) verify the token
-	  const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
-
-	  console.log(decoded);
-
-	  //2) Check if the user still exists
-	  db.query('SELECT * FROM users WHERE id = ?', [decoded.id], (error, result) => {
-		console.log(result);
-
-		if(!result) {
-		  return next();
-		}
-
-		req.user = result[0];
-		console.log("user is")
-		console.log(req.user);
-		return next();
-
-	  });
-	} catch (error) {
-	  console.log(error);
-	  return next();
-	}
-  } else {
-	next();
-  }
-}
-
 exports.logout = async (req, res) => {
   res.cookie('jwt', 'logout', {
 	expires: new Date(Date.now() + 2*1000),
@@ -136,47 +103,6 @@ exports.logout = async (req, res) => {
   });
 
   res.status(200).redirect('/');
-}
-
-exports.checkApiAccessLimit = async (req, res, next) => { 
-	if (req.cookies.jwt)
-	{
-		try
-		{
-			//1) verify the token
-			const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
-			// console.log(decoded);
-
-			//2) Check if the user still exists
-			db.query('SELECT * FROM users WHERE id = ?', [decoded.id], (error, result) => {
-
-				if (!result)
-				{
-					return next();
-				}
-
-				let apiLimit = result[0].api_access_limit;
-				if (apiLimit > 0)
-				{
-					console.log(apiLimit);
-					return next();
-				}
-				else
-				{
-					return res.status(429).send({ error: "API limit reached" });
-				}
-			});
-		}
-		catch (error)
-		{
-			console.log(error);
-			return next();
-		}
-	}
-	else
-	{
-		next();
-	}
 }
 
 exports.updateApiAccessLimit = async (req, res) => {
