@@ -21,7 +21,7 @@ exports.checkApiAccessLimit = async (req, res, next) => {
                     return next();
                 }
                 else {
-                    return res.status(429).send({ error: "API limit reached" });
+                    return res.status(429).send({ error: "API access limit is over" });
                 }
             });
         }
