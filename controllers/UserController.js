@@ -1,5 +1,6 @@
 const db = require('../config/db');
 const bcrypt = require('bcryptjs');
+const date = require('date-and-time');
 
 /**
  * API Response
@@ -16,9 +17,13 @@ function apiResponse(results) {
  * @return response()
  */
 exports.index = (req, res) => {
-    let query = "SELECT id, name, phone_number, email, api_access_limit FROM users";
+    let query = "SELECT id, name, phone_number, email, api_access_limit, created_at, updated_at FROM users";
 
     db.query(query, (err, results) => {
+        results.forEach(element => {
+            element.created_at = date.format(element.created_at, 'YYYY-MM-DD HH:mm:ss');
+            element.updated_at = date.format(element.updated_at, 'YYYY-MM-DD HH:mm:ss');
+        });
         if (err) throw err;
         res.send(apiResponse(results));
     });
@@ -30,9 +35,13 @@ exports.index = (req, res) => {
  * @return response()
  */
 exports.show = (req, res) => {
-    let query = "SELECT id, name, phone_number, email, api_access_limit FROM users WHERE id=" + req.params.id;
+    let query = "SELECT id, name, phone_number, email, api_access_limit, created_at, updated_at FROM users WHERE id=" + req.params.id;
 
     db.query(query, (err, results) => {
+        results.forEach(element => {
+            element.created_at = date.format(element.created_at, 'YYYY-MM-DD HH:mm:ss');
+            element.updated_at = date.format(element.updated_at, 'YYYY-MM-DD HH:mm:ss');
+        });
         if (err) throw err;
         res.send(apiResponse(results));
     });
