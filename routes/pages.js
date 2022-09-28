@@ -10,6 +10,10 @@ router.get('/', isLoggedIn, imageController.uploadImage);
 
 router.post('/', [checkApiAccessLimit, compressFilesUpload], imageController.imageCompress, imageController.errorHandler);
 
+router.get('/image_convert', isLoggedIn, imageController.convertImage);
+
+router.post('/image_convert', compressFilesUpload, imageController.imageConvert);
+
 router.get('/register', (req, res) => {
     res.render('register');
 });

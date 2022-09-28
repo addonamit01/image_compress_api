@@ -1,5 +1,7 @@
 const admzip = require("adm-zip");
 const fs = require("fs");
+const gm = require("gm");
+const path = require("path");
 const imagemin = require("imagemin");
 const imageminJpegRecompress = require("imagemin-jpeg-recompress");
 const imageminPngquant = require("imagemin-pngquant");
@@ -79,5 +81,70 @@ exports.uploadImage = (req, res) => {
         });
     } else {
         res.redirect('/login');
+    }
+}
+
+exports.convertImage = (req, res) => {
+    if (req.user) {
+        res.render('image_convert', {
+            user: JSON.stringify(req.user)
+        });
+    } else {
+        res.redirect('/login');
+    }
+}
+
+exports.imageConvert = (req, res) => {
+    const file = req.files;
+    const zip = new admzip();
+    let destinationPath = [];
+    if (file)
+    {
+        for (let index = 0; index < file.length; index++)
+        {
+            const fileName = file[index].filename;
+            const lastIndex = fileName.lastIndexOf('.');
+            const getFileName = fileName.slice(0, lastIndex);
+            const destination = `output/${getFileName}.png`;
+            
+            gm(file[index].path)
+                .write(destination, function (err) {
+                    if (err) console.log(err);
+                    // destinationPath.push(path.resolve(destination));
+                    // zip.addLocalFile(path.resolve(destination));
+                });
+        }
+
+        fs.readdir(path.resolve('output'), (err, files) => {
+            const imageFiles = files.filter(el => path.extname(el) === '.png');
+            
+            imageFiles.forEach(file => {
+                zip.addLocalFile(path.resolve(`output/${file}`));
+            });
+        });
+
+        let outputPath = Date.now() + "_output.zip";
+
+        fs.writeFileSync(outputPath, zip.toBuffer());
+        res.download(outputPath, (err) => {
+            // if (err) {
+            //     file.forEach(file => {
+            //         fs.unlinkSync(file.path);
+            //     });
+            //     destinationPath.forEach(filePath => {
+            //         fs.unlinkSync(path.resolve(filePath));
+            //     });
+            //     fs.unlinkSync(outputPath);
+            //     res.send("Error in downloading zip file");
+            // }
+
+            // file.forEach(file => {
+            //     fs.unlinkSync(file.path);
+            // });
+            // destinationPath.forEach(path => {
+            //     fs.unlinkSync(path);
+            // });
+            // fs.unlinkSync(outputPath);
+        });
     }
 }
