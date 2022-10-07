@@ -2,6 +2,7 @@ const express = require('express');
 const { isLoggedIn } = require('../middleware/CheckLogin');
 const { checkApiAccessLimit } = require('../middleware/ApiAccessLimit');
 const { compressFilesUpload } = require('../middleware/CompressFileUpload');
+const { imageConvert } = require('../middleware/CompressFileUpload');
 const imageController = require('../controllers/ImageController');
 
 const router = express.Router();
@@ -12,7 +13,7 @@ router.post('/', [checkApiAccessLimit, compressFilesUpload], imageController.ima
 
 router.get('/image_convert', isLoggedIn, imageController.convertImage);
 
-router.post('/image_convert', compressFilesUpload, imageController.imageConvert);
+router.post('/image_convert', imageConvert, imageController.imageConvert);
 
 router.get('/register', (req, res) => {
     res.render('register');

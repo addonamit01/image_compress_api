@@ -1,7 +1,6 @@
 const admzip = require("adm-zip");
 const fs = require("fs");
 const gm = require("gm");
-const path = require("path");
 const imagemin = require("imagemin");
 const imageminJpegRecompress = require("imagemin-jpeg-recompress");
 const imageminPngquant = require("imagemin-pngquant");
@@ -95,56 +94,25 @@ exports.convertImage = (req, res) => {
 }
 
 exports.imageConvert = (req, res) => {
-    const file = req.files;
-    const zip = new admzip();
-    let destinationPath = [];
+    const file = req.file;
+    const imageFormat = req.body.format;
     if (file)
-    {
-        for (let index = 0; index < file.length; index++)
-        {
-            const fileName = file[index].filename;
-            const lastIndex = fileName.lastIndexOf('.');
-            const getFileName = fileName.slice(0, lastIndex);
-            const destination = `output/${getFileName}.png`;
-            
-            gm(file[index].path)
-                .write(destination, function (err) {
-                    if (err) console.log(err);
-                    // destinationPath.push(path.resolve(destination));
-                    // zip.addLocalFile(path.resolve(destination));
-                });
-        }
+    {   
+        const fileName = file.filename;
+        const lastIndex = fileName.lastIndexOf('.');
+        const getFileName = fileName.slice(0, lastIndex);
+        const destination = `output/${getFileName}.${imageFormat}`;
 
-        fs.readdir(path.resolve('output'), (err, files) => {
-            const imageFiles = files.filter(el => path.extname(el) === '.png');
-            
-            imageFiles.forEach(file => {
-                zip.addLocalFile(path.resolve(`output/${file}`));
+        gm(file.path)
+        .write(destination, function (err) {
+            if (err) console.log(err);
+            res.download(destination, (err) => {
+                fs.unlinkSync(file.path);
+                fs.unlinkSync(destination);
+                if (err) {
+                    res.send("Error in downloading file");
+                }
             });
-        });
-
-        let outputPath = Date.now() + "_output.zip";
-
-        fs.writeFileSync(outputPath, zip.toBuffer());
-        res.download(outputPath, (err) => {
-            // if (err) {
-            //     file.forEach(file => {
-            //         fs.unlinkSync(file.path);
-            //     });
-            //     destinationPath.forEach(filePath => {
-            //         fs.unlinkSync(path.resolve(filePath));
-            //     });
-            //     fs.unlinkSync(outputPath);
-            //     res.send("Error in downloading zip file");
-            // }
-
-            // file.forEach(file => {
-            //     fs.unlinkSync(file.path);
-            // });
-            // destinationPath.forEach(path => {
-            //     fs.unlinkSync(path);
-            // });
-            // fs.unlinkSync(outputPath);
         });
     }
 }

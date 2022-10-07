@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
         <link rel="stylesheet" href="/css/style.css">
         <title>Image Convert</title>
     </head>
@@ -23,21 +23,47 @@
             </ul>
         </nav>
 
-        <div class="container mt-4">
-            <div class="jumbotron">
-                <h1 class="text-center">Convert Image png to jpg</h1>
-                <form action="/image_convert" method="post" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label for="file">Upload Files:</label>
-                        <input class="form-control" type="file" name="file" style="padding: 3px;" accept="image/*" required multiple>
-                    </div>
-                    <div class="form-group">
-                        <button class="btn btn-block btn-danger">Convert File</button>
-                    </div>
-                </form>
+        <div class="container mt-4 w-50">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">Convert Image</h3>
+                </div>
+                <div class="card-body">
+                    <form action="/image_convert" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="file">Upload File:</label>
+                                    <input class="form-control" type="file" name="file" style="padding: 3px;" accept="image/*" required>
+                                </div>
+                            </div>
+                            </div>
+
+                            <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="format">Select Image Format:</label>
+                                    <select class="form-control" name="format" required>
+                                        <option selected>Select Image Format</option>
+                                        <option value="png">PNG</option>
+                                        <option value="jpg">JPG</option>
+                                        <option value="jpeg">JPEG</option>
+                                    </select>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="row text-center">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <button class="btn btn-primary">Convert File</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
 
-        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
     </body>
 </html>

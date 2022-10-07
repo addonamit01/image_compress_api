@@ -34,3 +34,7 @@ exports.compressFilesUpload = multer({
         }
     }
 }).array('file', 20);
+
+exports.imageConvert = multer({
+    storage: storage
+}).single('file');

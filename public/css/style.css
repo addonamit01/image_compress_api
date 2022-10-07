@@ -1,12 +1,13 @@
 nav {
-  background-color: #563d7c;
+  background-color: #0069d9;
   color: #fff;
-  padding: 30px 60px;
+  padding: 20px 40px;
   display: flex;
   justify-content: space-between;
 }
 
 nav ul {
+  margin: 0;
   display: flex;
   justify-content: space-around;
   align-items: center;
